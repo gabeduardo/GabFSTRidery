@@ -10,7 +10,7 @@
             <v-list-item-content>Listado</v-list-item-content>
           </v-list-item>
         </router-link>
-        <router-link class="side_bar_link">
+        <router-link :to="{ name: 'AddVehicle' }" class="side_bar_link">
           <v-list-item>
             <v-list-item-action>
               <v-icon>contact_mail</v-icon>
