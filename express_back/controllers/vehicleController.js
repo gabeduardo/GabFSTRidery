@@ -50,7 +50,9 @@ exports.createVehicle = async (req, res) => {
     res.status(201).send(savedVehicle);
   } catch (error) {
     console.error(error);
-    res.status(500).send({ error: 'Error creando el vehículo' });
+    res
+      .status(500)
+      .send({ error: `Error creando el vehículo: ${error.message}` });
   }
 };
 

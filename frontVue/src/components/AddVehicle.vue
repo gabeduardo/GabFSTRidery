@@ -34,6 +34,7 @@
 <script setup>
 import { ref } from 'vue';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 const valid = ref(false);
 const brand = ref('');
@@ -48,7 +49,7 @@ const brandRules = [
 ];
 
 const years = Array.from({ length: 2025 - 1980 }, (v, k) => k + 1980);
-const statuses = ['disponible', 'en mantenimiento', 'en servicio']; // Ensure correct values
+const statuses = ['disponible', 'en mantenimiento', 'en servicio'];
 
 const submit = async () => {
   if (form.value.validate()) {
@@ -60,8 +61,8 @@ const submit = async () => {
           model: model.value,
           year: year.value,
           status: status.value.toLowerCase(), // Ensure status is in correct format
-          createdBy: '60d5ec49bcf86cd799439020', // Esto debería ser dinámico
-          updatedBy: '60d5ec49bcf86cd799439020', // Esto debería ser dinámico
+          createdBy: '60d5ec49bcf86cd799439020',
+          updatedBy: '60d5ec49bcf86cd799439020',
         },
         url: 'http://localhost:3000/vehicles',
         headers: {
@@ -69,10 +70,25 @@ const submit = async () => {
         },
       });
 
+      // Success message using SweetAlert2
+      Swal.fire({
+        icon: 'success',
+        title: 'Éxito',
+        text: 'Vehículo creado exitosamente!',
+      });
+
       form.value.reset();
       form.value.resetValidation();
     } catch (error) {
       console.error('Error creando el vehículo:', error);
+
+      // Error message using SweetAlert2
+      const errorMessage = error.response?.data?.error || 'Hubo un problema creando el vehículo. Por favor, inténtalo de nuevo.';
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: errorMessage,
+      });
     }
   }
 };
@@ -82,3 +98,4 @@ const clear = () => {
   form.value.resetValidation();
 };
 </script>
+
