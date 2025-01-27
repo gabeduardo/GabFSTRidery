@@ -72,8 +72,10 @@
           '¡Usuario registrado exitosamente!',
           'success'
         );
-        router.push({ name: 'Login' });
+        console.log("esta entrando en el EXITO")
+        router.push({ name: 'Home' });
       } catch (error) {
+        console.log("esta entrando en el ERRORRRR")
         const message = error.response?.data?.message || 'Ocurrió un error';
         Swal.fire('¡Ocurri[o un error al registrar el ususario!', message, 'error');
       }
