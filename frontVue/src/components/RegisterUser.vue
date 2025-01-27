@@ -59,7 +59,7 @@
   const submit = async () => {
     if (valid.value) {
       try {
-        await axios.post('http://localhost:8081/users/register', {
+        await axios.post('http://localhost:3000/users/register', {
           name: name.value,
           email: email.value,
           password: password.value,

@@ -11,10 +11,11 @@ exports.getAllUsers = async (req, res) => {
   }
 };
 
-// Obtener usuario por ID
-exports.getUserById = async (req, res) => {
+// Obtener usuario buscandolo a través del  correo electrónico
+exports.getUserByEmail = async (req, res) => {
   try {
-    const user = await User.findById(req.params.id);
+    const { email } = req.params;
+    const user = await User.findOne({ email });
     if (!user) {
       return res.status(404).send({ error: 'Usuario no encontrado' });
     }
@@ -28,14 +29,62 @@ exports.getUserById = async (req, res) => {
 // Crear un nuevo usuario
 exports.registerUser = async (req, res) => {
   const { name, email, password } = req.body;
-  const newUser = new User({ name, email, password });
+  const newUser = { name, email, password };
+
+  console.log('Creating user with:', newUser); // Log the raw data
 
   try {
     const user = await User.createUser(newUser);
+    console.log('User created with hashed password:', user.password); // Log the hashed password
     res.status(201).send({ user });
   } catch (error) {
     console.error('Error creando el usuario:', error);
     res.status(500).send({ error: 'Error creando el usuario' });
+  }
+};
+
+const jwt = require('jsonwebtoken');
+const bcryptjs = require('bcryptjs');
+
+const jwtOptions = {
+  jwtFromRequest:
+    require('passport-jwt').ExtractJwt.fromAuthHeaderWithScheme('jwt'),
+  secretOrKey: 'thisisthesecretkey',
+};
+
+// login un usuario
+// Método para iniciar sesión
+
+exports.loginUser = async (req, res) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return res.status(400).json({ message: 'Email and password are required' });
+  }
+
+  try {
+    const user = await User.getUserByEmail(email);
+
+    if (!user) {
+      return res.status(404).json({ message: 'The user does not exist!' });
+    }
+
+    console.log('Stored hashed password:', user.password); // Log the stored hashed password
+    console.log('Password from request:', password); // Log the password from request body
+
+    const isMatch = await bcryptjs.compare(password, user.password);
+    console.log('Password match result:', isMatch); // Log the comparison result
+
+    if (isMatch) {
+      const payload = { id: user._id };
+      const token = jwt.sign(payload, jwtOptions.secretOrKey);
+      return res.json({ message: 'ok', token });
+    } else {
+      return res.status(401).json({ message: 'The password is incorrect!' });
+    }
+  } catch (error) {
+    console.error('Error en user login:', error);
+    return res.status(500).json({ message: 'Server error' });
   }
 };
 

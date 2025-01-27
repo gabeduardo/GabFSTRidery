@@ -27,13 +27,13 @@ const UserSchema = new mongoose.Schema(
 );
 
 // Hash contraseña antes de salvarla
-UserSchema.pre('save', async function (next) {
-  const user = this;
-  if (user.isModified('password')) {
-    user.password = await bcryptjs.hash(user.password, 8);
-  }
-  next();
-});
+// UserSchema.pre('save', async function (next) {
+//   const user = this;
+//   if (user.isModified('password')) {
+//     user.password = await bcryptjs.hash(user.password, 8);
+//   }
+//   next();
+// });
 
 // // Generar JWT token
 // UserSchema.methods.generateAuthToken = function () {
@@ -43,10 +43,14 @@ UserSchema.pre('save', async function (next) {
 // };
 
 // Verificar password
+// Método de instancia para verificar la contraseña usando async/await
 UserSchema.methods.verifyPassword = async function (password) {
-  const user = this;
-  const isMatch = await bcryptjs.compare(password, user.password);
-  return isMatch;
+  return await bcryptjs.compare(password, this.password);
+};
+
+// Método estático para obtener un usuario por correo electrónico
+UserSchema.statics.getUserByEmail = async function (email) {
+  return await this.findOne({ email });
 };
 
 UserSchema.statics.createUser = async function (newUser) {
