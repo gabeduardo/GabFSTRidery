@@ -15,8 +15,11 @@
             :items="statuses"
             label="Cambiar Estado"
           ></v-select>
-          <v-btn @click="updateStatus(vehicle._id, vehicle.status)">Actualizar</v-btn>
         </v-card-text>
+         
+          <v-btn  color= "green" class="text-white" @click="updateStatus(vehicle._id, vehicle.status)">Actualizar</v-btn>
+        
+        
       </v-card>
     </v-flex>
   </v-layout>
