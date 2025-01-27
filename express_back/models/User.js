@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
+const bcryptjs = require('bcryptjs');
 // const jwt = require('jsonwebtoken');
 
 const UserSchema = new mongoose.Schema(
@@ -30,7 +30,7 @@ const UserSchema = new mongoose.Schema(
 UserSchema.pre('save', async function (next) {
   const user = this;
   if (user.isModified('password')) {
-    user.password = await bcrypt.hash(user.password, 8);
+    user.password = await bcryptjs.hash(user.password, 8);
   }
   next();
 });
@@ -45,8 +45,16 @@ UserSchema.pre('save', async function (next) {
 // Verificar password
 UserSchema.methods.verifyPassword = async function (password) {
   const user = this;
-  const isMatch = await bcrypt.compare(password, user.password);
+  const isMatch = await bcryptjs.compare(password, user.password);
   return isMatch;
+};
+
+UserSchema.statics.createUser = async function (newUser) {
+  const salt = await bcryptjs.genSalt(10);
+  const hash = await bcryptjs.hash(newUser.password, salt);
+  newUser.password = hash;
+  const newUserResource = new this(newUser);
+  return await newUserResource.save();
 };
 
 const User = mongoose.model('User', UserSchema);
