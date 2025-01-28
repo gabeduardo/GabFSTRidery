@@ -73,7 +73,7 @@
           'success'
         );
         console.log("esta entrando en el EXITO")
-        router.push({ name: 'Home' });
+        router.push({ name: 'Login' });
       } catch (error) {
         console.log("esta entrando en el ERRORRRR")
         const message = error.response?.data?.message || 'Ocurrió un error';
