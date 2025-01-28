@@ -35,6 +35,7 @@
 import { ref } from 'vue';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import { jwtDecode } from "jwt-decode";
 
 const valid = ref(false);
 const brand = ref('');
@@ -44,8 +45,8 @@ const status = ref('');
 const form = ref(null);
 
 const brandRules = [
-  v => !!v || 'Marca es requerida',
-  v => (v && v.length <= 20) || 'Marca debe tener menos de 20 caracteres'
+  v => !!v || 'marca es requerida',
+  v => (v && v.length <= 20) || 'La marca debe tener menos de 20 caracteres'
 ];
 
 const years = Array.from({ length: 2025 - 1980 }, (v, k) => k + 1980);
@@ -53,26 +54,43 @@ const statuses = ['disponible', 'en mantenimiento', 'en servicio'];
 
 
 const getToken = () => localStorage.getItem('jwtToken');
-
+const getUserIdFromToken = (token) => {
+  try {
+    const decoded = jwtDecode(token);
+    return decoded.id || decoded.userId || decoded.sub;
+  } catch (error) {
+    console.error('Error decodificando el token:', error);
+    return null;
+  }
+};
 
 const submit = async () => {
   if (form.value.validate()) {
     try {
       const token = getToken();
+      const userId = getUserIdFromToken(token); 
+      
+      if (!userId) {
+        throw new Error('No se pudo obtener el ID del usuario del token.');
+      }
+
+
+
+
       await axios({
         method: 'post',
         data: {
           brand: brand.value,
           model: model.value,
           year: year.value,
-          status: status.value.toLowerCase(), // Ensure status is in correct format
-          createdBy: '60d5ec49bcf86cd799439020',
-          updatedBy: '60d5ec49bcf86cd799439020',
+          status: status.value.toLowerCase(), 
+          createdBy: userId,
+          updatedBy: userId,
         },
         url: 'http://localhost:3000/vehicles',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}` // Añadir el token en las cabeceras
+          'Authorization': `Bearer ${token}` 
         },
       });
 
