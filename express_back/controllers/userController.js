@@ -49,7 +49,7 @@ const bcryptjs = require('bcryptjs');
 const jwtOptions = {
   jwtFromRequest:
     require('passport-jwt').ExtractJwt.fromAuthHeaderWithScheme('jwt'),
-  secretOrKey: 'thisisthesecretkey',
+  secretOrKey: 'movieratingapplicationsecretkey',
 };
 
 // login un usuario

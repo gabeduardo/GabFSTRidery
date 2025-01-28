@@ -13,12 +13,8 @@ mongoose
   .then(() => console.log('Conexión establecida con MongoDB'))
   .catch((err) => console.error('Error de conexión:', err));
 
-const passportJWT = require('passport-jwt');
-const ExtractJwt = passportJWT.ExtractJwt;
-const JwtStrategy = passportJWT.Strategy;
-const jwtOptions = {};
-jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeaderWithScheme('jwt');
-jwtOptions.secretOrKey = 'movieratingapplicationsecretkey';
+require('./config/passport')(passport);
+app.use(passport.initialize());
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');

@@ -16,10 +16,7 @@
             label="Cambiar Estado"
           ></v-select>
         </v-card-text>
-         
-          <v-btn  color= "green" class="text-white" @click="updateStatus(vehicle._id, vehicle.status)">Actualizar</v-btn>
-        
-        
+        <v-btn color="green" class="text-white" @click="updateStatus(vehicle._id, vehicle.status)">Actualizar</v-btn>
       </v-card>
     </v-flex>
   </v-layout>
@@ -33,23 +30,40 @@ import Swal from 'sweetalert2';
 const vehicles = ref([]);
 const statuses = ['disponible', 'en mantenimiento', 'en servicio'];
 
+// Función para obtener el token JWT de localStorage
+const getToken = () => localStorage.getItem('jwtToken');
+
 const fetchVehicles = async () => {
+  const token = getToken();
   try {
-    const response = await axios.get('http://localhost:3000/vehicles');
+    const response = await axios.get('http://localhost:3000/vehicles', {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
     vehicles.value = response.data;
   } catch (error) {
     console.error('Error fetching vehicles:', error);
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: 'Error al traer los vehículos.',
+    });
   }
 };
 
 // Actualiza el estado del vehículo utilizando la nueva ruta del endpoint
 const updateStatus = async (vehicleId, newStatus) => {
+  const token = getToken();
   try {
     await axios.put(`http://localhost:3000/vehicles/${vehicleId}/status`, {
       status: newStatus,
-      updatedBy: '60d5ec49bcf86cd799439020', //TODO  Este valor debería ser dinámico 
+      updatedBy: '60d5ec49bcf86cd799439020', // TODO: Este valor debería ser dinámico 
     }, {
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
     });
 
     // Mensaje de éxito usando SweetAlert2
@@ -75,3 +89,7 @@ onMounted(() => {
   fetchVehicles();
 });
 </script>
+
+<style scoped>
+/* Estilos personalizados si es necesario */
+</style>

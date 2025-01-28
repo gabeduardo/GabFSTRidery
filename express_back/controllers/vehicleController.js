@@ -1,14 +1,19 @@
+const passport = require('passport');
 const Vehicle = require('../models/Vehicle');
 
-exports.getAllVehicles = async (req, res) => {
-  try {
-    const vehicles = await Vehicle.find({});
-    res.send(vehicles);
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('Error al consultar todos los vehículos');
-  }
-};
+// Obtener todos los vehículos
+exports.getAllVehicles = [
+  passport.authenticate('jwt', { session: false }), // Middleware de autenticación
+  async (req, res) => {
+    try {
+      const vehicles = await Vehicle.find({});
+      res.send(vehicles);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Error al consultar todos los vehículos');
+    }
+  },
+];
 
 exports.getVehicleById = async (req, res) => {
   try {
