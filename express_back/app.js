@@ -8,10 +8,13 @@ const passport = require('passport');
 
 const app = express();
 
-mongoose
-  .connect('mongodb://localhost:27017/express_app')
-  .then(() => console.log('Conexión establecida con MongoDB'))
-  .catch((err) => console.error('Error de conexión:', err));
+const mongoURI =
+  process.env.MONGO_URI || 'mongodb://mongodb:27017/express_app_charvela'; //quito localhost para poder conectarme a docker
+
+mongoose.connect(mongoURI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
 require('./config/passport')(passport);
 app.use(passport.initialize());
