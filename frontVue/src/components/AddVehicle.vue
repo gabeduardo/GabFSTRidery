@@ -24,7 +24,7 @@
       :items="statuses"
       required
     ></v-select>
-    <v-btn @click="submit" :disabled="!valid">
+    <v-btn color="green" @click="submit" :disabled="!valid">
       Enviar
     </v-btn>
     <v-btn @click="clear">Limpiar</v-btn>

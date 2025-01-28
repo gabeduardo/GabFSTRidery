@@ -24,6 +24,7 @@ import { ref } from 'vue';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import { useRouter } from 'vue-router';
+import store from '@/store';
 
 const valid = ref(false);
 const form = ref(null);
@@ -51,7 +52,7 @@ const submit = async () => {
 
       // Guarda el token en localStorage
       localStorage.setItem('jwtToken', token);
-
+      store.dispatch('login', token);
       Swal.fire('¡Bienvenido!', 'success');
       console.log("Esta entrando en el EXITO");
       router.push({ name: 'Home' });

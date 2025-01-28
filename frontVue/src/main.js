@@ -6,5 +6,5 @@ import router from './router'
 import '@mdi/font/css/materialdesignicons.css'
 import VueSweetalert2 from 'vue-sweetalert2'
 import 'sweetalert2/dist/sweetalert2.min.css'
-
-createApp(App).use(vuetify).use(router).use(VueSweetalert2).mount('#app')
+import store from './store'
+createApp(App).use(vuetify).use(router).use(VueSweetalert2).use(store).mount('#app')
