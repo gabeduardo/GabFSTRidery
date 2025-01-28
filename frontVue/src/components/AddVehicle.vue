@@ -51,9 +51,14 @@ const brandRules = [
 const years = Array.from({ length: 2025 - 1980 }, (v, k) => k + 1980);
 const statuses = ['disponible', 'en mantenimiento', 'en servicio'];
 
+
+const getToken = () => localStorage.getItem('jwtToken');
+
+
 const submit = async () => {
   if (form.value.validate()) {
     try {
+      const token = getToken();
       await axios({
         method: 'post',
         data: {
@@ -67,6 +72,7 @@ const submit = async () => {
         url: 'http://localhost:3000/vehicles',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}` // Añadir el token en las cabeceras
         },
       });
 
