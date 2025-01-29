@@ -35,7 +35,7 @@ exports.registerUser = async (req, res) => {
 
   try {
     const user = await User.createUser(newUser);
-    console.log('User created with hashed password:', user.password); // Log the hashed password
+    // console.log('User created with hashed password:', user.password); // Log the hashed password
     res.status(201).send({ user });
   } catch (error) {
     console.error('Error creando el usuario:', error);
@@ -59,14 +59,14 @@ exports.loginUser = async (req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    return res.status(400).json({ message: 'Email and password are required' });
+    return res.status(400).json({ message: 'Correo y contraseña son requeridos' });
   }
 
   try {
     const user = await User.getUserByEmail(email);
 
     if (!user) {
-      return res.status(404).json({ message: 'The user does not exist!' });
+      return res.status(404).json({ message: 'El usuario no existe!' });
     }
 
     console.log('Stored hashed password:', user.password); // Log the stored hashed password
@@ -80,7 +80,7 @@ exports.loginUser = async (req, res) => {
       const token = jwt.sign(payload, jwtOptions.secretOrKey);
       return res.json({ message: 'ok', token });
     } else {
-      return res.status(401).json({ message: 'The password is incorrect!' });
+      return res.status(401).json({ message: 'La contraseña es incorrecta!' });
     }
   } catch (error) {
     console.error('Error en user login:', error);
