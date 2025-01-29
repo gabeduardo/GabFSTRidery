@@ -15,6 +15,13 @@ a,
   padding: 3px;
 }
 
+.max-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: min(95%, 1280px);
+}
+
 @media (hover: hover) {
   a:hover {
     background-color: hsla(160, 100%, 37%, 0.2);

@@ -1,31 +1,32 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from './components/Home.vue'
-import AddVehicle from './components/AddVehicle.vue'
-import RegisterUser from './components/RegisterUser.vue'
-import LoginUser from './components/LoginUser.vue'
-import store from './store'
+import Home from '../views/Home.vue'
+import AddVehicle from '../views/AddVehicle.vue'
+import RegisterUser from '../views/Register.vue'
+import LoginUser from '../views/Login.vue'
+import store from '../store'
+import { ADD_VEHICLE, HOME, LOGIN, REGISTER } from './routes'
 
 const routes = [
   {
-    path: '/',
-    name: 'Home',
+    path: HOME,
+    name: 'home',
     component: Home,
     meta: { requiresAuth: true }, //  para proteger la ruta
   },
   {
-    path: '/vehicles/add',
-    name: 'AddVehicle',
+    path: ADD_VEHICLE,
+    name: 'add-vehicle',
     component: AddVehicle,
     meta: { requiresAuth: true }, //  para proteger la ruta
   },
   {
-    path: '/users/register',
-    name: 'Register',
+    path: REGISTER,
+    name: 'register',
     component: RegisterUser,
   },
   {
-    path: '/users/login',
-    name: 'Login',
+    path: LOGIN,
+    name: 'login',
     component: LoginUser,
   },
 ]
@@ -40,7 +41,7 @@ router.beforeEach((to, from, next) => {
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     if (!store.getters.isAuthenticated) {
       // Redirige a la página de inicio de sesión si no está autenticado
-      next({ name: 'Login' })
+      next({ name: 'login' })
     } else {
       next()
     }
