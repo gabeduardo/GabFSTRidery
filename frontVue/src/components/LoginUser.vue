@@ -39,7 +39,7 @@ const router = useRouter();
 const submit = async () => {
   if (valid.value) {
     try {
-      const response = await axios.post('http://backend:3000/users/login', {
+      const response = await axios.post('http://localhost:3000/users/login', {
         email: email.value,
         password: password.value,
       }, {

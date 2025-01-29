@@ -87,7 +87,7 @@ const submit = async () => {
           createdBy: userId,
           updatedBy: userId,
         },
-        url: 'http://backend:3000/vehicles',
+        url: 'http://localhost:3000/vehicles',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}` 

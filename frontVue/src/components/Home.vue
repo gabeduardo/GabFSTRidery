@@ -36,7 +36,7 @@ const getToken = () => localStorage.getItem('jwtToken');
 const fetchVehicles = async () => {
   const token = getToken();
   try {
-    const response = await axios.get('http://backend:3000/vehicles', {
+    const response = await axios.get('http://localhost:3000/vehicles', {
       headers: {
         'Authorization': `Bearer ${token}`
       }
@@ -56,7 +56,7 @@ const fetchVehicles = async () => {
 const updateStatus = async (vehicleId, newStatus) => {
   const token = getToken();
   try {
-    await axios.put(`http://backend:3000/vehicles/${vehicleId}/status`, {
+    await axios.put(`http://localhost:3000/vehicles/${vehicleId}/status`, {
       status: newStatus,
       updatedBy: '60d5ec49bcf86cd799439020', // TODO: Este valor debería ser dinámico 
     }, {
