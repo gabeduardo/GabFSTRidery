@@ -4,14 +4,12 @@
     <template v-if="isLogIn">
       <v-menu>
         <template v-slot:activator="{ props: menu }">
-          <v-avatar v-bind="menu" color="grey" size="40" class="mr-4">
+          <v-avatar v-bind="menu" color="grey" size="40" class="mr-4 cursor-pointer">
             <v-icon icon="mdi-account-circle"></v-icon>
           </v-avatar>
         </template>
         <v-list>
-          <v-list-item>
-            <v-btn @click="logout">Salir</v-btn>
-          </v-list-item>
+          <v-list-item @click="logout">Cerrar sesión </v-list-item>
         </v-list>
       </v-menu>
     </template>
@@ -38,7 +36,6 @@ const logout = () => {
 </script>
 
 <style scoped>
-
 .link-style {
   cursor: pointer;
 }

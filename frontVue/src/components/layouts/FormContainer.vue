@@ -13,7 +13,7 @@
 </template>
 
 <script setup>
-import logo from '../../assets/logo.svg'
+import logo from '@/assets/images/logo.svg'
 defineProps({ title: { type: String } })
 </script>
 

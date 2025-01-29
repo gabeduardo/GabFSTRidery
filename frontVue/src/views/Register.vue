@@ -53,12 +53,11 @@
 
 <script setup>
 import { ref } from 'vue'
-import axios from 'axios'
-import Swal from 'sweetalert2'
 import { useRouter } from 'vue-router'
-import FormContainer from '../components/layouts/FormContainer.vue'
-import MainContainer from '../components/layouts/MainContainer.vue'
 import { LOGIN } from '@/router/routes'
+import { register } from '@/api/autentication'
+import FormContainer from '@/components/layouts/FormContainer.vue'
+import MainContainer from '@/components/layouts/MainContainer.vue'
 
 const valid = ref(false)
 const name = ref('')
@@ -75,30 +74,13 @@ const emailRules = [
 
 // Función para enviar el formulario
 const submit = async () => {
-  if (valid.value) {
-    try {
-      await axios.post(
-        'http://localhost:3000/users/register',
-        {
-          name: name.value,
-          email: email.value,
-          password: password.value,
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        },
-      )
-      Swal.fire('¡Usuario registrado exitosamente!', 'success')
-      console.log('esta entrando en el EXITO')
-      router.push({ name: 'login' })
-    } catch (error) {
-      console.log('esta entrando en el ERRORRRR', error)
-      const message = error.response?.data?.message || 'Ocurrió un error'
-      Swal.fire('¡Ocurrió un error al registrar el ususario!', message, 'error')
-    }
-  }
+  if (!valid.value) return
+  const response = register({
+    name: name.value,
+    email: email.value,
+    password: password.value,
+  })
+  if (response) router.push({ name: 'login' })
 }
 
 // Función para limpiar el formulario

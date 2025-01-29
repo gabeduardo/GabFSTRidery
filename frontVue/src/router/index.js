@@ -1,22 +1,15 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '../views/Home.vue'
-import AddVehicle from '../views/AddVehicle.vue'
-import RegisterUser from '../views/Register.vue'
-import LoginUser from '../views/Login.vue'
-import store from '../store'
-import { ADD_VEHICLE, HOME, LOGIN, REGISTER } from './routes'
+import Home from '@/views/Home.vue'
+import RegisterUser from '@/views/Register.vue'
+import LoginUser from '@/views/Login.vue'
+import store from '@/store'
+import { HOME, LOGIN, REGISTER } from './routes'
 
 const routes = [
   {
     path: HOME,
     name: 'home',
     component: Home,
-    meta: { requiresAuth: true }, //  para proteger la ruta
-  },
-  {
-    path: ADD_VEHICLE,
-    name: 'add-vehicle',
-    component: AddVehicle,
     meta: { requiresAuth: true }, //  para proteger la ruta
   },
   {

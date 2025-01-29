@@ -20,14 +20,13 @@
 </template>
 
 <script setup>
-import axios from 'axios'
-import Swal from 'sweetalert2'
 import { useRouter } from 'vue-router'
-import store from '@/store'
 import { ref } from 'vue'
-import FormContainer from '../components/layouts/FormContainer.vue'
-import MainContainer from '../components/layouts/MainContainer.vue'
 import { REGISTER } from '@/router/routes'
+import { login } from '@/api/autentication'
+import FormContainer from '@/components/layouts/FormContainer.vue'
+import MainContainer from '@/components/layouts/MainContainer.vue'
+import store from '@/store'
 
 const valid = ref(false)
 const form = ref(null)
@@ -40,38 +39,18 @@ const emailRules = [
 const router = useRouter()
 
 const submit = async () => {
-  if (valid.value) {
-    try {
-      const response = await axios.post('http://localhost:3000/users/login', {
-        email: email.value,
-        password: password.value,
-      }, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      const token = response.data.token;
-
-      // Guarda el token en localStorage
-      localStorage.setItem('jwtToken', token);
-      store.dispatch('login', token);
-      Swal.fire('¡Bienvenido!', 'success');
-      console.log("Esta entrando en el EXITO");
-      router.push({ name: 'home' });
-    } catch (error) {
-      console.log("Esta entrando en el ERROR");
-      const message = error.response?.data?.message || 'Ocurrió un error';
-      Swal.fire('¡Ocurrió un error al iniciar sesión!', message, 'error');
-    }
+  const token = await login({ email: email.value, password: password.value })
+  if (token) {
+    store.dispatch('login', token)
+    router.push({ name: 'home' })
   }
-};
+}
 
 const clear = () => {
-  form.value.reset();
-  email.value = '';
-  password.value = '';
-};
+  form.value.reset()
+  email.value = ''
+  password.value = ''
+}
 </script>
 
 <style scoped>
