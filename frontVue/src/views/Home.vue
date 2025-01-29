@@ -1,9 +1,7 @@
 <template>
   <MainContainer :isLogIn="true">
     <div class="pa-8 d-flex flex-column align-start fill-height">
-      <!-- <v-btn class="w-100 w-sm-auto mb-8" @click="router.push({ name: 'add-vehicle' })">
-        <v-icon icon="mdi-plus"></v-icon>Añadir vehículo</v-btn
-      > -->
+
       <template v-if="vehicles.length === 0">
         <div class="d-flex flex-column align-center justify-center w-100">
           <img :src="emptyList" alt="No hay vehículos" />
